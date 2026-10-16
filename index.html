@@ -1,0 +1,212 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#09090B">
+  <title>Raj Kahar · Video Editor</title>
+  <meta name="description" content="Raj Kahar is a video editor and motion designer in Nepal. Reels, interviews and brand films, with captions, motion graphics, colour and sound handled in one place.">
+  <meta property="og:title" content="Raj Kahar · Video Editor">
+  <meta property="og:description" content="Reels, interviews and brand films that people watch to the end.">
+  <meta property="og:type" content="website">
+  <!-- switch to an absolute URL (https://your-domain/assets/og.jpg) once the site has a domain -->
+  <meta property="og:image" content="assets/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" as="image" href="assets/hero/poster.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="styles.css?v=9">
+  <script defer src="data/projects.js?v=9"></script>
+  <script defer src="script.js?v=9"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Raj Kahar","jobTitle":"Video Editor","address":{"@type":"PostalAddress","addressLocality":"Nepalgunj","addressCountry":"NP"},"email":"mailto:rraj68711@gmail.com","sameAs":["https://www.instagram.com/exwhyzed77/","https://www.tiktok.com/@lowkeeyyy_69"]}</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span></span></div>
+  <div class="ambient" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"><span>Play</span></div>
+
+  <header class="nav" id="nav">
+    <div class="nav-row">
+      <a class="glass wordmark" href="#top" aria-label="Raj Kahar, back to top"><span class="mark">RK</span><span class="name">Raj Kahar</span></a>
+      <nav class="glass nav-links" id="nav-links" aria-label="Main">
+        <a href="#work">Work</a>
+        <a href="#grade">Colour</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+      </nav>
+      <a class="glass glass-rose nav-contact" href="#contact">Contact me</a>
+      <button class="glass menu-btn" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO: copy + an edit suite (program monitor and a timeline of the real projects) -->
+    <section class="hero wrap" id="top" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="status intro" style="--d:0"><i class="dot" aria-hidden="true"></i>Available for new projects</p>
+        <h1 id="hero-title" class="intro" style="--d:1">Edits that keep people <span class="grad">watching to the end.</span></h1>
+        <p class="lede intro" style="--d:2">I’m Raj, a video editor and motion designer in Nepal. I turn raw footage into reels, interviews and brand films, with captions, graphics, colour and sound handled in one place.</p>
+        <div class="hero-actions intro" style="--d:3">
+          <a class="btn btn-light" href="#work">View my work</a>
+          <button type="button" class="btn btn-glass" id="hero-play"><span class="tri" aria-hidden="true"></span>Watch the interview</button>
+        </div>
+        <ul class="hero-facts intro" style="--d:4" aria-label="At a glance">
+          <li><b>3</b><span>repeat clients</span></li>
+          <li><b>5+</b><span>interview episodes</span></li>
+          <li><b>4K</b><span>delivery</span></li>
+        </ul>
+      </div>
+
+      <div class="suite intro" style="--d:2">
+        <figure class="monitor" aria-label="Program monitor">
+          <video class="hero-video" src="assets/hero/reel-loop.mp4" poster="assets/hero/poster.webp" muted loop autoplay playsinline preload="auto" aria-hidden="true"></video>
+          <div class="mon-preview" aria-hidden="true"><img alt=""><video muted loop playsinline preload="none"></video></div>
+          <div class="vf" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <span class="glass chip hud" aria-hidden="true"><i class="rec"></i><span id="hero-tc">00:00:00:00</span></span>
+          <figcaption class="glass chip cap" id="mon-cap">Program · shots from the work below</figcaption>
+        </figure>
+        <div class="timeline" id="timeline">
+          <div class="tl-head" aria-hidden="true">
+            <span class="tl-title">Portfolio_v9 · timeline</span>
+            <span class="tl-hint">Hover a clip to preview · click to play</span>
+          </div>
+          <div class="tl-body">
+            <div class="tl-ruler" aria-hidden="true"></div>
+            <div class="tl-tracks" id="tl-tracks" role="group" aria-label="Projects on a timeline"></div>
+            <div class="tl-playhead" aria-hidden="true"><i></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLIENTS -->
+    <section class="clients wrap reveal" aria-label="Clients">
+      <p class="label">Trusted by</p>
+      <ul>
+        <li>The No Skip Show <small>USA</small></li>
+        <li>Rodhi Sources <small>Kathmandu</small></li>
+        <li>Seenmatic <small>Nepal</small></li>
+      </ul>
+    </section>
+
+    <!-- WORK -->
+    <section class="section wrap" id="work" aria-labelledby="work-title">
+      <div class="head reveal">
+        <div>
+          <p class="label"><span class="idx">01</span>Selected work</p>
+          <h2 id="work-title">Recent edits</h2>
+        </div>
+        <div class="head-note">
+          <p>Client reels, an interview series and a few personal pieces. Every video plays right here in its card, with sound.</p>
+          <p class="keys" aria-label="Keyboard shortcuts: J back 5 seconds, K pause, L play and speed up, comma and full stop step one frame, M mute, F full screen"><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd> shuttle, like in your editor<span> · <kbd>,</kbd><kbd>.</kbd> one frame</span></p>
+        </div>
+      </div>
+
+      <div id="featured"></div>
+
+      <div class="group-head reveal"><h3>Short-form</h3><span class="count" data-count="short"></span><p>Vertical reels for brands, made to be watched with or without sound.</p></div>
+      <div class="grid grid-tall" id="grid-short"></div>
+
+      <div class="group-head reveal"><h3>Film, sound &amp; motion</h3><span class="count" data-count="film"></span><p>Personal pieces where I push rhythm, sound design and animation.</p></div>
+      <div class="grid grid-wide" id="grid-film"></div>
+    </section>
+
+    <!-- COLOUR: before / after wipe -->
+    <section class="section wrap grade" id="grade" aria-labelledby="grade-title">
+      <div class="grade-copy reveal">
+        <p class="label"><span class="idx">02</span>Colour</p>
+        <h2 id="grade-title">Same shot. Before and after the grade.</h2>
+        <p>Drag the line. On the left is the camera file straight out of the edit. On the right is the finished grade from the Seenmatic Dashain reel: deeper reds, cleaner skin, gold that looks like gold.</p>
+        <p class="grade-note">Matched shot to shot, with no heavy filters. Your camera’s look stays, it just looks its best.</p>
+      </div>
+      <div class="compare reveal" id="compare" style="--pos:50%">
+        <video class="cmp-raw" src="assets/grade/raw.mp4" poster="assets/grade/raw.webp" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+        <video class="cmp-graded" src="assets/grade/graded.mp4" poster="assets/grade/graded.webp" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+        <span class="glass chip cmp-l" aria-hidden="true">Camera file</span>
+        <span class="glass chip cmp-r" aria-hidden="true">Graded</span>
+        <div class="cmp-handle" role="slider" tabindex="0" aria-label="Before and after split" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% graded"><i></i></div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section wrap" id="services" aria-labelledby="services-title">
+      <div class="head reveal">
+        <div>
+          <p class="label"><span class="idx">03</span>Services</p>
+          <h2 id="services-title">Send the footage. Get back a finished video.</h2>
+        </div>
+        <p class="head-note"><span>One editor for the whole finish, so the story, design and sound all feel like the same video.</span></p>
+      </div>
+      <div class="services">
+        <article class="svc reveal"><span class="svc-n">01</span><h3>Story &amp; pacing</h3><p>I find the strongest line, cut the dead air and keep the rhythm calm. Nothing jumpy for the sake of it.</p></article>
+        <article class="svc reveal"><span class="svc-n">02</span><h3>Captions that read</h3><p>Nepali, Romanised Nepali or English, in your brand fonts and placed where the viewer is already looking.</p></article>
+        <article class="svc reveal"><span class="svc-n">03</span><h3>Motion graphics</h3><p>Product cards, diagrams, lower thirds and end cards that explain the idea without crowding the frame.</p></article>
+        <article class="svc reveal"><span class="svc-n">04</span><h3>Sound design &amp; mix</h3><p>Clean dialogue, steady loudness on every platform, and effects that support the cut instead of distracting from it.</p></article>
+        <article class="svc reveal"><span class="svc-n">05</span><h3>Colour</h3><p>Shots matched to each other while keeping your camera’s natural look. No heavy filters.</p></article>
+        <article class="svc reveal"><span class="svc-n">06</span><h3>Delivery</h3><p>Vertical, square or 16:9, up to 4K, plus project files so your captions stay editable later.</p></article>
+      </div>
+    </section>
+
+    <!-- PROCESS: drawn as timeline markers -->
+    <section class="section wrap" id="process" aria-labelledby="process-title">
+      <div class="head reveal">
+        <div>
+          <p class="label"><span class="idx">04</span>Process</p>
+          <h2 id="process-title">How a project runs</h2>
+        </div>
+      </div>
+      <ol class="markers reveal">
+        <li style="--c:#FF4F7B"><span class="mk-tc">Marker 1</span><h3>Brief</h3><p>Tell me the platform, the audience and the deadline. Share a video you like and I’ll match its style.</p></li>
+        <li style="--c:#FFB547"><span class="mk-tc">Marker 2</span><h3>First cut</h3><p>Story and pacing first, so we agree on the structure before any polish goes on.</p></li>
+        <li style="--c:#5BC8FF"><span class="mk-tc">Marker 3</span><h3>Revisions</h3><p>Each round is a new numbered version, so nothing you approved ever gets lost.</p></li>
+        <li style="--c:#3DDC84"><span class="mk-tc">Marker 4</span><h3>Delivery</h3><p>Final files for every platform, ready to post on the day you need them.</p></li>
+      </ol>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section wrap about" id="about" aria-labelledby="about-title">
+      <div class="reveal">
+        <p class="label"><span class="idx">05</span>About</p>
+        <h2 id="about-title">Hi, I’m Raj.</h2>
+      </div>
+      <div class="about-copy reveal">
+        <p class="about-lead">I’ve been editing professionally since 2024, from Nepalgunj, Nepal.</p>
+        <p>Most weeks I’m cutting reels for brands, from jewellery shops to import agents, plus long-form episodes for The No Skip Show in the US. I like edits that feel calm and clear: you follow the story without ever noticing the cuts.</p>
+        <ul class="tools" aria-label="Tools and languages">
+          <li>Premiere Pro</li><li>DaVinci Resolve</li><li>After Effects</li><li>Fusion</li><li>Photoshop</li><li>Illustrator</li><li>Nepali &amp; English</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="wrap contact-wrap" id="contact" aria-labelledby="contact-title">
+      <div class="contact reveal">
+        <p class="label">Contact</p>
+        <h2 id="contact-title">Have footage? Let’s make it worth watching.</h2>
+        <p class="contact-note">Tell me what the video is for, where it will be posted and when you need it.</p>
+        <div class="contact-actions">
+          <a class="btn glass glass-rose btn-big" id="contact-email" href="#">Email me</a>
+          <a class="btn btn-glass btn-big" id="contact-wa" href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <button type="button" class="btn btn-glass btn-big" id="copy-email">Copy email</button>
+        </div>
+        <p class="clock" id="clock" aria-live="off"></p>
+        <ul class="socials" id="socials"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <p class="big-name" aria-hidden="true">Raj Kahar</p>
+    <div class="foot-row">
+      <span>© <span id="year"></span> Raj Kahar · Video editor · Nepal</span>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
