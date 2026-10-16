@@ -21,6 +21,18 @@ window.PORTFOLIO = {
       summary: 'A ten-minute backstage interview with Cleveland band Mud Whale, cut together with their live set. The job was to keep a loose, crowded conversation moving: tight pacing, word-timed captions, branded lower thirds and performance inserts placed on the beat.'
     },
     {
+      id: 'seenmatic-wedding', group: 'short', format: 'tall', duration: '0:40', short: 'Wedding',
+      client: 'Seenmatic · Jewellery', title: 'The full wedding set',
+      role: 'Edit · Price cards · Nepali captions · Advanced colour',
+      summary: 'A bridal-set walkthrough. Every piece gets a glass card with its weight, then a running total adds the whole set up. Finished with a fuller grade that makes the gold glow against the red velvet.'
+    },
+    {
+      id: 'esh-ad', group: 'short', format: 'tall', duration: '0:35', short: 'ESH',
+      client: 'Expert Service Hub', title: 'Dream events in Nepal',
+      role: 'Edit · B-roll · Captions · Service cards',
+      summary: 'An ad for a destination-event company: presenter to camera, Himalaya and heritage B-roll, a stacked glass list of their services and an end card with every way to reach them.'
+    },
+    {
       id: 'seenmatic-bill', group: 'short', format: 'tall', duration: '0:38', short: 'Bill',
       client: 'Seenmatic · Jewellery', title: 'The ex-boyfriend’s bill',
       role: 'Edit · Nepali captions · Graphics · Colour',

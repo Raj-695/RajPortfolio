@@ -15,8 +15,10 @@
   $('#year').textContent = new Date().getFullYear();
   const email = $('#contact-email');
   email.href = `mailto:${data.email}`; email.title = data.email;
-  $('#contact-wa').href = data.whatsapp;
-  $('#socials').innerHTML = data.socials.map(s =>
+  // Instagram is the big button, so the cards below list the other channels
+  const ig = data.socials.find(s => s.label === 'Instagram');
+  $('#contact-ig').href = ig.url;
+  $('#socials').innerHTML = data.socials.filter(s => s !== ig).map(s =>
     `<li><a href="${s.url}" target="_blank" rel="noopener noreferrer">${s.label} <span>${s.handle} ↗</span></a></li>`).join('');
   const toast = $('#toast');
   const say = msg => { toast.textContent = msg; toast.classList.add('show'); clearTimeout(say.t); say.t = setTimeout(() => toast.classList.remove('show'), 1800); };
@@ -98,8 +100,9 @@
     });
     $('.feat-play', card)?.addEventListener('click', () => play(card, p));
   });
-  // a contact tile fills the last row of the reel grid
-  $('#grid-short').insertAdjacentHTML('beforeend', `<a class="card cta-tile" href="#contact">
+  // a contact tile fills the last row of the reel grid (full width when the reels fill every row)
+  const reelCount = projects.filter(p => p.group === 'short').length;
+  $('#grid-short').insertAdjacentHTML('beforeend', `<a class="card cta-tile${reelCount % 4 === 0 ? ' full' : ''}" href="#contact">
     <span class="cta-small">Your project</span>
     <span class="cta-big">Footage sitting on a drive? Let’s turn it into something people finish.</span>
     <span class="cta-go" aria-hidden="true">→</span></a>`);
@@ -294,6 +297,30 @@
   requestAnimationFrame(tick);
   if (reduced) heroVideo.pause(); else heroVideo.play?.().catch(() => {});
 
+  /* ---------- moving edit timeline behind the title ---------- */
+  {
+    let seed = 11;
+    const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    const ids = projects.map(p => p.id);
+    const titles = ['Title', 'Lower third', 'Caption', 'Card', 'Logo', 'CTA', 'Glass card', 'Counter'];
+    const lanes = [
+      { cls: 'gfx', n: 9, make: i => `<span class="tb-clip gfx" style="width:${70 + rnd() * 90 | 0}px;margin-left:${10 + rnd() * 60 | 0}px">${titles[i % titles.length]}</span>` },
+      { cls: 'vid', n: 7, make: i => `<span class="tb-clip vid" style="width:${150 + rnd() * 140 | 0}px;background-image:url(${media(ids[i % ids.length]).poster})"></span>` },
+      { cls: 'vid', n: 7, make: i => `<span class="tb-clip vid b" style="width:${130 + rnd() * 170 | 0}px;background-image:url(${media(ids[(i + 4) % ids.length]).poster})"></span>` },
+      { cls: 'aud', n: 6, make: () => { let w = ''; const n = 18 + rnd() * 22 | 0; for (let k = 0; k < n; k++) w += `<i style="height:${20 + rnd() * 75 | 0}%"></i>`; return `<span class="tb-clip aud" style="width:${n * 6}px">${w}</span>`; } }
+    ];
+    const half = lanes.map(l => `<div class="tb-track ${l.cls}">${Array.from({ length: l.n }, (_, i) => l.make(i)).join('')}</div>`).join('');
+    // two identical halves side by side scroll seamlessly
+    $('#tb-reel').innerHTML = `<div class="tb-half">${half}</div><div class="tb-half">${half}</div>`;
+    const tbTc = $('#tb-tc'), t0 = performance.now();
+    const tbTick = now => {
+      const f = Math.floor((now - t0) / (1000 / 30));
+      tbTc.textContent = `01:00:${pad(Math.floor(f / 30) % 60)}:${pad(f % 30)}`;
+      if (!reduced) requestAnimationFrame(tbTick);
+    };
+    requestAnimationFrame(tbTick);
+  }
+
   const showOnMonitor = b => {
     const p = projects.find(x => x.id === b.dataset.id);
     hoverClip = b;
@@ -352,9 +379,22 @@
   });
   // keep both videos on the same frame
   graded.addEventListener('timeupdate', () => { if (Math.abs(raw.currentTime - graded.currentTime) > .06) raw.currentTime = graded.currentTime; });
+  let cmpInView = false;
+  const playBoth = () => { raw.currentTime = graded.currentTime; Promise.all([raw.play(), graded.play()]).catch(() => {}); };
+  // switch between graded samples
+  const tabs = $$('.grade-tabs [role=tab]'), note = $('#grade-note');
+  tabs.forEach(tab => tab.addEventListener('click', () => {
+    if (tab.classList.contains('is-on')) return;
+    tabs.forEach(t => { t.classList.toggle('is-on', t === tab); t.setAttribute('aria-selected', t === tab); });
+    Object.assign(raw, { poster: tab.dataset.rawPoster, src: tab.dataset.raw });
+    Object.assign(graded, { poster: tab.dataset.gradedPoster, src: tab.dataset.graded });
+    note.textContent = tab.dataset.note;
+    if (cmpInView && !reduced) playBoth();
+  }));
   if (!reduced) {
     new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { raw.currentTime = graded.currentTime; Promise.all([raw.play(), graded.play()]).catch(() => {}); }
+      cmpInView = e.isIntersecting;
+      if (e.isIntersecting) playBoth();
       else { raw.pause(); graded.pause(); }
     }, { threshold: .3 }).observe(cmp);
     // a gentle hint the line moves, once

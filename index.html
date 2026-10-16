@@ -18,9 +18,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="styles.css?v=14">
-  <script defer src="data/projects.js?v=9"></script>
-  <script defer src="script.js?v=9"></script>
+  <link rel="stylesheet" href="styles.css?v=16">
+  <script defer src="data/projects.js?v=15"></script>
+  <script defer src="script.js?v=15"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Raj Kahar","jobTitle":"Video Editor","address":{"@type":"PostalAddress","addressLocality":"Nepalgunj","addressCountry":"NP"},"email":"mailto:rraj68711@gmail.com","sameAs":["https://www.instagram.com/exwhyzed77/","https://www.tiktok.com/@lowkeeyyy_69"]}</script>
 </head>
 <body>
@@ -48,9 +48,12 @@
     <!-- HERO: copy + an edit suite (program monitor and a timeline of the real projects) -->
     <section class="hero wrap" id="top" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="status intro" style="--d:0"><i class="dot" aria-hidden="true"></i>Available for new projects</p>
-        <h1 id="hero-title" class="intro" style="--d:1">Edits that keep people <span class="grad">watching to the end.</span></h1>
-        <p class="lede intro" style="--d:2">I’m Raj, a video editor and motion designer in Nepal. I turn raw footage into reels, interviews and brand films, with captions, graphics, colour and sound handled in one place.</p>
+        <div class="title-wrap">
+          <!-- moving edit timeline behind the title, filled by script.js -->
+          <div class="title-bg" aria-hidden="true"><div class="tb-reel" id="tb-reel"></div><div class="tb-head"><span id="tb-tc">01:00:00:00</span></div></div>
+          <p class="status intro" style="--d:0"><i class="dot" aria-hidden="true"></i>Available for new projects</p>
+          <h1 id="hero-title" class="intro" style="--d:1">Edits that keep people <span class="grad">watching to the end.</span></h1>
+        </div>
         <div class="hero-actions intro" style="--d:3">
           <a class="btn btn-light" href="#work">View my work</a>
           <button type="button" class="btn btn-glass" id="hero-play"><span class="tri" aria-hidden="true"></span>Watch the interview</button>
@@ -121,12 +124,16 @@
       <div class="grade-copy reveal">
         <p class="label"><span class="idx">02</span>Colour</p>
         <h2 id="grade-title">Same shot. Before and after the grade.</h2>
-        <p>Drag the line. On the left is the camera file straight out of the edit. On the right is the finished grade from the Seenmatic Dashain reel: deeper reds, cleaner skin, gold that looks like gold.</p>
-        <p class="grade-note">Matched shot to shot, with no heavy filters. Your camera’s look stays, it just looks its best.</p>
+        <p>Drag the line. On the left is the camera file straight out of the edit. On the right is my finished grade.</p>
+        <div class="grade-tabs" role="tablist" aria-label="Choose a grade">
+          <button type="button" role="tab" class="chip-btn is-on" aria-selected="true" data-raw="assets/grade/raw2.mp4" data-graded="assets/grade/graded2.mp4" data-raw-poster="assets/grade/raw2.jpg" data-graded-poster="assets/grade/graded2.jpg" data-note="Seenmatic wedding set: a fuller grade with a warm shop glow, richer skin and gold that stands out from the red velvet.">Wedding set · advanced grade</button>
+          <button type="button" role="tab" class="chip-btn" aria-selected="false" data-raw="assets/grade/raw.mp4" data-graded="assets/grade/graded.mp4" data-raw-poster="assets/grade/raw.webp" data-graded-poster="assets/grade/graded.webp" data-note="Seenmatic Dashain gifts: deeper reds, cleaner skin, gold that looks like gold.">Dashain gifts</button>
+        </div>
+        <p class="grade-note" id="grade-note">Seenmatic wedding set: a fuller grade with a warm shop glow, richer skin and gold that stands out from the red velvet.</p>
       </div>
       <div class="compare reveal" id="compare" style="--pos:50%">
-        <video class="cmp-raw" src="assets/grade/raw.mp4" poster="assets/grade/raw.webp" muted loop playsinline preload="metadata" aria-hidden="true"></video>
-        <video class="cmp-graded" src="assets/grade/graded.mp4" poster="assets/grade/graded.webp" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+        <video class="cmp-raw" src="assets/grade/raw2.mp4" poster="assets/grade/raw2.jpg" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+        <video class="cmp-graded" src="assets/grade/graded2.mp4" poster="assets/grade/graded2.jpg" muted loop playsinline preload="metadata" aria-hidden="true"></video>
         <span class="glass chip cmp-l" aria-hidden="true">Camera file</span>
         <span class="glass chip cmp-r" aria-hidden="true">Graded</span>
         <div class="cmp-handle" role="slider" tabindex="0" aria-label="Before and after split" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% graded"><i></i></div>
@@ -191,7 +198,7 @@
         <p class="contact-note">Tell me what the video is for, where it will be posted and when you need it.</p>
         <div class="contact-actions">
           <a class="btn glass glass-rose btn-big" id="contact-email" href="#">Email me</a>
-          <a class="btn btn-glass btn-big" id="contact-wa" href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a class="btn btn-glass btn-big" id="contact-ig" href="#" target="_blank" rel="noopener noreferrer">Instagram</a>
           <button type="button" class="btn btn-glass btn-big" id="copy-email">Copy email</button>
         </div>
         <p class="clock" id="clock" aria-live="off"></p>
