@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#09090B">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0F0E12">
   <title>Raj Kahar · Video Editor</title>
   <meta name="description" content="Raj Kahar is a video editor and motion designer in Nepal. Reels, interviews and brand films, with captions, motion graphics, colour and sound handled in one place.">
   <meta property="og:title" content="Raj Kahar · Video Editor">
@@ -18,29 +18,30 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="styles.css?v=16">
-  <script defer src="data/projects.js?v=15"></script>
-  <script defer src="script.js?v=15"></script>
+  <link rel="stylesheet" href="styles.css?v=27">
+  <script defer src="data/projects.js?v=20"></script>
+  <script defer src="script.js?v=27"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Raj Kahar","jobTitle":"Video Editor","address":{"@type":"PostalAddress","addressLocality":"Nepalgunj","addressCountry":"NP"},"email":"mailto:rraj68711@gmail.com","sameAs":["https://www.instagram.com/exwhyzed77/","https://www.tiktok.com/@lowkeeyyy_69"]}</script>
 </head>
 <body>
+  <svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs id="lg-defs"></defs></svg>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="progress" aria-hidden="true"><span></span></div>
   <div class="ambient" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
   <div class="grain" aria-hidden="true"></div>
-  <div class="cursor" aria-hidden="true"><span>Play</span></div>
+  <div class="cursor" aria-hidden="true"><span class="lg"></span></div>
 
   <header class="nav" id="nav">
     <div class="nav-row">
-      <a class="glass wordmark" href="#top" aria-label="Raj Kahar, back to top"><span class="mark"><img src="assets/raj.jpg" alt="" width="46" height="46" decoding="async"></span><span class="name">Raj Kahar</span></a>
+      <a class="glass lg wordmark" href="#top" aria-label="Raj Kahar, back to top"><span class="mark"><img src="assets/raj.jpg" alt="" width="46" height="46" decoding="async"></span><span class="name">Raj Kahar</span></a>
       <nav class="glass nav-links" id="nav-links" aria-label="Main">
         <a href="#work">Work</a>
         <a href="#grade">Colour</a>
         <a href="#services">Services</a>
         <a href="#about">About</a>
       </nav>
-      <a class="glass glass-rose nav-contact" href="#contact">Contact me</a>
-      <button class="glass menu-btn" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span></button>
+      <a class="glass glass-rose lg lg-rose nav-contact" href="#contact">Contact me</a>
+      <button class="glass lg menu-btn" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span></button>
     </div>
   </header>
 
@@ -56,7 +57,7 @@
         </div>
         <div class="hero-actions intro" style="--d:3">
           <a class="btn btn-light" href="#work">View my work</a>
-          <button type="button" class="btn btn-glass" id="hero-play"><span class="tri" aria-hidden="true"></span>Watch the interview</button>
+          <button type="button" class="btn btn-glass lg" id="hero-play"><span class="tri" aria-hidden="true"></span>Watch the interview</button>
         </div>
         <ul class="hero-facts intro" style="--d:4" aria-label="At a glance">
           <li><b>3</b><span>repeat clients</span></li>
@@ -93,7 +94,8 @@
       <ul>
         <li>The No Skip Show <small>USA</small></li>
         <li>Rodhi Sources <small>Kathmandu</small></li>
-        <li>Seenmatic <small>Nepal</small></li>
+        <li>Expert Service Hub <small>Nepal</small></li>
+        <li>Seenmatic <small>Jewellery</small></li>
       </ul>
     </section>
 
@@ -124,7 +126,7 @@
       <div class="grade-copy reveal">
         <p class="label"><span class="idx">02</span>Colour</p>
         <h2 id="grade-title">Same shot. Before and after the grade.</h2>
-        <p>Drag the line. On the left is the camera file straight out of the edit. On the right is my finished grade.</p>
+        <p>Drag the line. Left is before the grade, right is after.</p>
         <div class="grade-tabs" role="tablist" aria-label="Choose a grade">
           <button type="button" role="tab" class="chip-btn is-on" aria-selected="true" data-raw="assets/grade/raw2.mp4" data-graded="assets/grade/graded2.mp4" data-raw-poster="assets/grade/raw2.jpg" data-graded-poster="assets/grade/graded2.jpg" data-note="Seenmatic wedding set: a fuller grade with a warm shop glow, richer skin and gold that stands out from the red velvet.">Wedding set · advanced grade</button>
           <button type="button" role="tab" class="chip-btn" aria-selected="false" data-raw="assets/grade/raw.mp4" data-graded="assets/grade/graded.mp4" data-raw-poster="assets/grade/raw.webp" data-graded-poster="assets/grade/graded.webp" data-note="Seenmatic Dashain gifts: deeper reds, cleaner skin, gold that looks like gold.">Dashain gifts</button>
@@ -134,8 +136,8 @@
       <div class="compare reveal" id="compare" style="--pos:50%">
         <video class="cmp-raw" src="assets/grade/raw2.mp4" poster="assets/grade/raw2.jpg" muted loop playsinline preload="metadata" aria-hidden="true"></video>
         <video class="cmp-graded" src="assets/grade/graded2.mp4" poster="assets/grade/graded2.jpg" muted loop playsinline preload="metadata" aria-hidden="true"></video>
-        <span class="glass chip cmp-l" aria-hidden="true">Camera file</span>
-        <span class="glass chip cmp-r" aria-hidden="true">Graded</span>
+        <span class="glass chip cmp-l" aria-hidden="true">Before grade</span>
+        <span class="glass chip cmp-r" aria-hidden="true">After grade</span>
         <div class="cmp-handle" role="slider" tabindex="0" aria-label="Before and after split" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% graded"><i></i></div>
       </div>
     </section>
@@ -197,9 +199,9 @@
         <h2 id="contact-title">Have footage? Let’s make it worth watching.</h2>
         <p class="contact-note">Tell me what the video is for, where it will be posted and when you need it.</p>
         <div class="contact-actions">
-          <a class="btn glass glass-rose btn-big" id="contact-email" href="#">Email me</a>
-          <a class="btn btn-glass btn-big" id="contact-ig" href="#" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <button type="button" class="btn btn-glass btn-big" id="copy-email">Copy email</button>
+          <a class="btn glass glass-rose lg lg-rose btn-big" id="contact-email" href="#">Email me</a>
+          <a class="btn btn-glass lg btn-big" id="contact-ig" href="#" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <button type="button" class="btn btn-glass lg btn-big" id="copy-email">Copy email</button>
         </div>
         <p class="clock" id="clock" aria-live="off"></p>
         <ul class="socials" id="socials"></ul>
@@ -214,6 +216,9 @@
       <a href="#top">Back to top ↑</a>
     </div>
   </footer>
+
+  <!-- how far through the page you are, as a timecode (the page = the running time of all the work) -->
+  <div class="scroll-tc lg" aria-hidden="true"><i class="stc-rec"></i><span class="stc-tc" id="stc">00:00:00:00</span><span class="stc-of" id="stc-of"></span></div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
