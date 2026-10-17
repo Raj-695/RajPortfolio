@@ -1,6 +1,6 @@
 ﻿:root {
   color-scheme: dark;
-  --bg: #0F0E12;
+  --bg: #0E0E16;
   --surface: #111114;
   --panel: #0E0E11;
   --text: #F4F1EC;
@@ -506,6 +506,12 @@ kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; 
   .clock .dot { display: inline-block; vertical-align: 1px; margin-right: 7px; }
   .socials { margin-top: 14px; gap: 8px; }
   .socials a { padding: 9px 13px; font-size: 13px; }
+}
+@media (max-width: 560px) {
+  .play { width: 42px; height: 42px; margin: -21px 0 0 -21px; }
+  .play svg { width: 12px; margin-left: 2px; }
+  .card.featured .play { width: 54px; height: 54px; margin: -27px 0 0 -27px; }
+  .card.featured .play svg { width: 15px; }
 }
 @media (max-width: 350px) { .wordmark .name { display: none; } .wordmark { padding: 0 4px; } }
 @media (prefers-reduced-motion: reduce) {

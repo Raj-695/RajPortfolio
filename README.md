@@ -15,7 +15,7 @@ Run `py -m http.server 8000` in this folder, then open http://localhost:8000.
 All project text lives in `data/projects.js`. `group` sets the section and timeline track, `short` is the clip label, and `featured: true` makes the large card.
 
 Each project `id` needs three files:
-- `assets/posters/<id>.webp`: still frame (1080 px wide for 9:16, 1920 px for 16:9)
+- `assets/posters/<id>.jpg`: hand-picked best frame (720 px wide for 9:16, 1280 px for 16:9)
 - `assets/previews/<id>.mp4`: 5 s muted hover loop (480 px)
 - `assets/video/<id>.mp4`: full video with sound (H.264, faststart)
 
@@ -23,9 +23,9 @@ All videos are 720p (1280x720 or 720x1280), encoded from the original exports in
 ```
 ffmpeg -i in.mov -vf scale=720:-2:flags=lanczos -c:v libx264 -preset slow -crf 22 -maxrate 2800k -bufsize 5600k -pix_fmt yuv420p -c:a aac -b:a 160k -movflags +faststart assets/video/<id>.mp4
 ffmpeg -ss <t> -t 5 -i in.mov -an -vf scale=480:-2 -c:v libx264 -crf 26 -pix_fmt yuv420p -movflags +faststart assets/previews/<id>.mp4
-ffmpeg -ss <t> -i in.mov -frames:v 1 -vf scale=1080:-2 -c:v libwebp -quality 82 assets/posters/<id>.webp
+ffmpeg -nostdin -i in.mov -ss <t> -frames:v 1 -vf scale=720:-2:flags=lanczos -q:v 2 assets/posters/<id>.jpg
 ```
-(Use scale=-2:720 for 16:9. The No Skip card is only the first 59.4 s of "draft 4.mp4", ending on a picture cut with a 0.8 s fade.)
+(Posters are JPEG on purpose: this ffmpeg's WebP encoder crushes stills into blur. Use scale=-2:720 for 16:9. The No Skip card is only the first 59.4 s of "draft 4.mp4", ending on a picture cut with a 0.8 s fade.)
 
 The hero loop is 6 cut-free shots with 0.4 s dissolves and loops back into shot 1 seamlessly (19.7 s). The build script was session scratch: `hero.py` lists the source windows.
 
