@@ -819,3 +819,4 @@ h1, h2, .feat-info h3, .cat-head h3, .exp-what h3, .sub-head h3, .about-card h2,
 .endcard img, .endcard img[width] { filter: grayscale(.2) sepia(.1);
   -webkit-mask: radial-gradient(52% 50% at 50% 42%, #000 38%, transparent 76%), linear-gradient(180deg, #000 30%, transparent 85%);
   mask: radial-gradient(52% 50% at 50% 42%, #000 38%, transparent 76%), linear-gradient(180deg, #000 30%, transparent 85%); -webkit-mask-composite: source-in; mask-composite: intersect; }
+.endcard { margin-top: 24px; }
