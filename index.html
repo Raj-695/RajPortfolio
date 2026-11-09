@@ -18,29 +18,30 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="styles.css?v=40">
-  <script defer src="data/projects.js?v=30"></script>
-  <script defer src="script.js?v=40"></script>
+  <link rel="stylesheet" href="styles.css?v=44">
+  <script defer src="data/projects.js?v=32"></script>
+  <script defer src="script.js?v=44"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Raj Kahar","jobTitle":"Video Editor","worksFor":{"@type":"Organization","name":"Seenmatic"},"address":{"@type":"PostalAddress","addressLocality":"Nepalgunj","addressCountry":"NP"},"email":"mailto:rraj68711@gmail.com","url":"https://raj-695.github.io/RajPortfolio/","sameAs":["https://www.instagram.com/exwhyzed77/","https://www.tiktok.com/@lowkeeyyy_69"]}</script>
 </head>
 <body>
+  <svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs id="lg-defs"></defs></svg>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="nav" id="nav">
     <div class="nav-row wrap">
-      <a class="brand" href="#top" aria-label="Raj Kahar, back to top">
+      <a class="brand lg" href="#top" aria-label="Raj Kahar, back to top">
         <img src="assets/raj.jpg" alt="" width="34" height="34" decoding="async">
         <span>Raj Kahar</span>
       </a>
-      <nav class="nav-links" id="nav-links" aria-label="Main">
+      <nav class="nav-links lg" id="nav-links" aria-label="Main">
         <a href="#work">Work</a>
-        <a href="#animation">Animation</a>
+        <a href="#motion">Motion</a>
         <a href="#experience">Experience</a>
         <a href="#services">Services</a>
         <a href="#contact" class="only-menu">Contact</a>
       </nav>
-      <a class="btn btn-accent btn-sm nav-cta" href="#contact">Let’s talk</a>
-      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span></button>
+      <a class="btn btn-sm lg lg-accent nav-cta" href="#contact">Let’s talk</a>
+      <button class="menu-btn lg" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span></button>
     </div>
   </header>
 
@@ -48,19 +49,32 @@
     <!-- HERO -->
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="wrap hero-copy">
-        <p class="eyebrow rise" style="--d:0"><i class="dot" aria-hidden="true"></i>Video editor at Seenmatic · Open for freelance</p>
-        <h1 id="hero-title" class="rise" style="--d:1">I edit videos people <em>actually finish.</em></h1>
+        <div class="title-wrap">
+          <!-- a live edit timeline moving behind the title, built by script.js from the real projects -->
+          <div class="tlx rise" style="--d:0" aria-hidden="true">
+            <div class="tlx-heads"><span class="r">TC</span><span class="t">V3</span><span class="v">V2</span><span class="v">V1</span><span class="a">A1</span><span class="a2">A2</span></div>
+            <div class="tlx-view">
+              <div class="tlx-ruler" id="tlx-ruler"></div>
+              <div class="tlx-reel" id="tlx-reel"></div>
+            </div>
+            <div class="tlx-head"><span id="tlx-tc">01:00:00:00</span></div>
+          </div>
+          <p class="eyebrow lg rise" style="--d:0"><i class="dot" aria-hidden="true"></i>Video editor at Seenmatic · Open for freelance</p>
+          <h1 id="hero-title" class="rise" style="--d:1">I edit videos people <em>actually finish.</em></h1>
+        </div>
         <div class="hero-sub rise" style="--d:2">
           <p>Reels, ads and interviews for brands in Nepal and the USA. Story, captions, motion graphics, animation, colour and sound, all in one edit.</p>
           <div class="hero-actions">
             <a class="btn btn-light" href="#work">See the work</a>
-            <a class="btn btn-ghost" href="#contact">Get in touch</a>
+            <a class="btn btn-ghost lg" href="#contact">Get in touch</a>
           </div>
         </div>
       </div>
       <!-- a slow wall of the real reels; click one to play it in the work section -->
       <div class="wall rise" style="--d:3">
-        <div class="wall-track" id="wall"></div>
+        <div class="wall-view"><div class="wall-track" id="wall"></div></div>
+        <button type="button" class="wall-btn prev lg" aria-label="Scroll reels left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button type="button" class="wall-btn next lg" aria-label="Scroll reels right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
     </section>
 
@@ -83,25 +97,19 @@
 
       <div id="featured"></div>
 
-      <div class="filters reveal" role="tablist" aria-label="Filter the reels" id="filters">
-        <button type="button" role="tab" class="chip is-on" aria-selected="true" data-cat="all">All</button>
-        <button type="button" role="tab" class="chip" aria-selected="false" data-cat="brand">Brands &amp; ads</button>
-        <button type="button" role="tab" class="chip" aria-selected="false" data-cat="creator">Explainers</button>        <button type="button" role="tab" class="chip" aria-selected="false" data-cat="personal">Spec</button>
-      </div>
-      <div class="grid grid-tall" id="grid-reel"></div>
-      <div class="more-row"><button type="button" class="btn btn-ghost" id="more" hidden></button></div>
-
-      <div class="sub-head reveal"><h3>Film, sound &amp; motion</h3><p>Personal pieces where I push rhythm, sound design and animation.</p></div>
-      <div class="grid grid-wide" id="grid-film"></div>
+      <div id="cats"></div>
     </section>
 
-    <!-- ANIMATION -->
-    <section class="section wrap" id="animation" aria-labelledby="anim-title">
+    <!-- MOTION GRAPHICS + ANIMATION -->
+    <section class="section wrap" id="motion" aria-labelledby="motion-title">
       <div class="sec-head reveal">
-        <p class="kicker"><span>02</span>Animation &amp; explainers</p>
-        <h2 id="anim-title">When the camera can’t show it, <em>I animate it.</em></h2>
-        <p class="sec-note">Illustrated scenes I designed and animated for a jewellery myth-busting series. Each one explains a whole situation in a few seconds, without a word on screen.</p>
+        <p class="kicker"><span>02</span>Motion graphics</p>
+        <h2 id="motion-title">Graphics that <em>explain the idea.</em></h2>
+        <p class="sec-note">Moments taken straight from delivered videos: phone and app screens, price breakdowns, counters, lists and cards, each built to make a point land in a second or two.</p>
       </div>
+      <div class="mg-grid" id="mg"></div>
+
+      <div class="sub-head reveal" id="animation"><h3>Illustrated scenes</h3><p>When the camera can’t show it, I animate it. Made for a jewellery myth-busting series, each one explains a situation without a word on screen.</p></div>
       <div class="anim-grid" id="anim"></div>
     </section>
 
@@ -205,9 +213,9 @@
         <h2 id="contact-title">Have footage? <em>Let’s make it worth watching.</em></h2>
         <a class="mail" id="mail" href="#"></a>
         <div class="contact-actions">
-          <a class="btn btn-accent" id="contact-email" href="#">Email me</a>
-          <a class="btn btn-ghost" id="contact-wa" href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          <button type="button" class="btn btn-ghost" id="copy-email">Copy email</button>
+          <a class="btn lg lg-accent" id="contact-email" href="#">Email me</a>
+          <a class="btn btn-ghost lg" id="contact-wa" href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <button type="button" class="btn btn-ghost lg" id="copy-email">Copy email</button>
         </div>
         <p class="clock" id="clock" aria-live="off"></p>
         <ul class="socials" id="socials"></ul>
@@ -216,7 +224,10 @@
   </main>
 
   <footer class="footer wrap">
-    <p class="big-name" aria-hidden="true">Raj Kahar</p>
+    <div class="endcard" aria-hidden="true">
+      <img src="assets/raj.jpg" alt="" width="132" height="132" loading="lazy" decoding="async">
+      <p class="big-name">Raj Kahar</p>
+    </div>
     <div class="foot-row">
       <span>© <span id="year"></span> Raj Kahar · Video editor · Nepal</span>
       <a href="#top">Back to top ↑</a>

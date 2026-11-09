@@ -13,10 +13,10 @@ window.PORTFOLIO = {
     { label: 'TikTok', handle: '@lowkeeyyy_69', url: 'https://www.tiktok.com/@lowkeeyyy_69' }
   ],
   stats: [
-    { n: '1', plus: true, label: 'year editing full time' },
+    { n: '200', suffix: 'K', plus: true, label: 'TikTok views on one All Star Jewellery reel' },
     { n: '25', plus: true, label: 'videos delivered' },
-    { n: '9', label: 'clients and brands' },
-    { n: '2', label: 'countries, Nepal and the USA' }
+    { n: '9', label: 'clients in Nepal and the USA' },
+    { n: '1', plus: true, label: 'year editing full time' }
   ],
   clients: [
     { name: 'Seenmatic', note: 'Agency · Nepal' },
@@ -28,6 +28,34 @@ window.PORTFOLIO = {
     { name: 'Vibes Advisory', note: 'Language institute · Butwal' },
     { name: 'President Group', note: 'Hospitality' },
     { name: 'Yuwaz', note: 'Business content' }
+  ],
+  // the work section shows the featured interview (+ its short), then the top 3 per niche, in this order.
+  // Projects not listed here (and not featured) stay in the data but are not shown.
+  featuredShort: 'mudwhale-short',
+  categories: [
+    { title: 'Jewellery & retail', note: 'Product-first reels for a gold shop: price cards, running totals and a grade that makes the gold glow. The series I edit for them has a reel past 200K views on TikTok.', ids: ['asj-part3', 'asj-tihar', 'seenmatic-wedding'] },
+    { title: 'Brand ads', note: 'Ads for services and institutes, with on-brand cards, B-roll and a clear call to action.', ids: ['vibes', 'esh-ad', 'rodhi-winter'] },
+    { title: 'Explainers & talking heads', note: 'One person, one idea: graphics and captions that make a talk easy to follow with the sound off.', ids: ['yuwaz', 'asj-part1', 'asj-part2'] },
+    { title: 'Festival greetings', note: 'Tihar and Dashain greetings that feel warm, not like a template.', ids: ['president-tihar', 'rodhi-tika', 'seenmatic-dashain'] },
+    { title: 'Film, sound & motion', note: 'Personal pieces where I push rhythm, sound design and animation.', ids: ['supra', 'drift-sfx', 'motion-explainer'], wide: true }
+  ],
+  // motion-graphics moments cut from delivered videos (assets/mg/<id>.mp4 + .jpg, silent loops)
+  motion: [
+    { id: 'tiktok-profile', title: 'TikTok profile screen', from: 'All Star Jewellery' },
+    { id: 'comments', title: 'Viewer comment pop-ups', from: 'All Star Jewellery' },
+    { id: 'price-breakdown', title: 'Price breakdown to 198%', from: 'All Star Jewellery' },
+    { id: 'profit-bars', title: 'Profit comparison bars', from: 'All Star Jewellery' },
+    { id: 'checklist', title: 'Animated checklist', from: 'All Star Jewellery' },
+    { id: 'elec-social', title: 'Social platforms build', from: 'XSIS Media election ad' },
+    { id: 'elec-wall', title: 'Social post wall', from: 'XSIS Media election ad' },
+    { id: 'elec-work', title: '“Your work” photo cards', from: 'XSIS Media election ad' },
+    { id: 'elec-platforms', title: 'Platform list', from: 'XSIS Media election ad' },
+    { id: 'supply-chain', title: 'Supply-chain cards', from: 'Yuwaz' },
+    { id: 'seat-counter', title: 'Limited-seats counter', from: 'Vibes Advisory' },
+    { id: 'running-total', title: 'Running total card', from: 'All Star Jewellery' },
+    { id: 'budget-tags', title: 'Budget price tags', from: 'All Star Jewellery' },
+    { id: 'service-list', title: 'Stacked service list', from: 'Expert Service Hub' },
+    { id: 'winter-cards', title: 'Glass category cards', from: 'Rodhi Sources' }
   ],
   // illustrated scenes animated for the All Star Jewellery series (assets/anim/<id>.mp4 + .jpg, silent loops)
   animations: [
