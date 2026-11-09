@@ -41,14 +41,14 @@ window.PORTFOLIO = {
   ],
   // motion-graphics moments cut from delivered videos (assets/mg/<id>.mp4 + .jpg, silent loops); src = the full video on the page
   motion: [
-    { id: 'tiktok-profile', src: 'asj-part1', title: 'TikTok profile screen', from: 'All Star Jewellery' },
-    { id: 'comments', src: 'asj-part1', title: 'Viewer comment pop-ups', from: 'All Star Jewellery' },
-    { id: 'profit-bars', src: 'asj-part3', title: 'Profit comparison bars', from: 'All Star Jewellery' },
+    { id: 'tiktok-profile', src: 'asj-part1', at: 27.6, title: 'TikTok profile screen', from: 'All Star Jewellery' },
+    { id: 'comments', src: 'asj-part1', at: 20.4, title: 'Viewer comment pop-ups', from: 'All Star Jewellery' },
+    { id: 'profit-bars', src: 'asj-part3', at: 34.4, title: 'Profit comparison bars', from: 'All Star Jewellery' },
     { id: 'elec-social', title: 'Social platforms build', from: 'XSIS Media election ad' },
     { id: 'elec-wall', title: 'Social post wall', from: 'XSIS Media election ad' },
     { id: 'elec-work', title: '“Your work” photo cards', from: 'XSIS Media election ad' },
-    { id: 'supply-chain', src: 'yuwaz', title: 'Supply-chain cards', from: 'Yuwaz' },
-    { id: 'running-total', src: 'seenmatic-wedding', title: 'Running total card', from: 'All Star Jewellery' }
+    { id: 'supply-chain', src: 'yuwaz', at: 6.0, title: 'Supply-chain cards', from: 'Yuwaz' },
+    { id: 'running-total', src: 'seenmatic-wedding', at: 27.6, title: 'Running total card', from: 'All Star Jewellery' }
   ],
   // illustrated scenes animated for the All Star Jewellery series (assets/anim/<id>.mp4 + .jpg, silent loops)
   animations: [

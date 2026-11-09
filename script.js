@@ -162,6 +162,7 @@
     v.addEventListener('progress', () => { if (v.duration && v.buffered.length) buf.style.transform = `scaleX(${v.buffered.end(v.buffered.length - 1) / v.duration})`; });
     v.addEventListener('play', () => {
       $$('video.full').forEach(o => { if (o !== v) o.pause(); });
+      document.dispatchEvent(new Event('cardplay'));
       active = { card, v };
       card.classList.remove('paused'); toggle.setAttribute('aria-label', 'Pause');
     });
@@ -313,7 +314,7 @@
   {
     const suite = $('#suite'), scroll = $('#tl-scroll'), inner = $('#tl-inner'), lanesEl = $('#tl-lanes'), head = $('#tl-playhead');
     const monitor = $('#monitor'), monV = $('#mon-v'), monImg = $('#mon-img'), monBg = $('#mon-bg'), monMode = $('#mon-mode'), monTitle = $('#mon-title'), monTc = $('#mon-tc');
-    const playBtn = $('#tl-play'), openBtn = $('#mon-open');
+    const playBtn = $('#tl-play'), soundBtn = $('#mon-sound');
     const REEL = 12, LONG = 14, FILM = 10, GFX = 5;            // seconds each clip occupies on this sequence
     const reels = [byId(data.featuredShort), ...data.categories.filter(c => !c.wide).flatMap(c => c.ids.map(byId))];
     const longs = [projects.find(p => p.featured), ...data.categories.filter(c => c.wide).flatMap(c => c.ids.map(byId))];
@@ -326,6 +327,8 @@
         poster: isG ? `assets/mg/${item.id}.jpg` : media(item.id).poster,
         src: isG ? `assets/mg/${item.id}.mp4` : media(item.id).preview,
         open: isG ? (item.src ? byId(item.src) : null) : item };
+      c.full = isG ? (c.open ? media(c.open.id).video : null) : media(item.id).video;
+      c.base = isG ? (item.at || 0) : 0;
       tracks[track].push(c); return c;
     };
     // sequence: two reels, then a long-form/film piece, repeated; a graphic sits over the end of every other reel
@@ -380,15 +383,36 @@
       if (c === shown) return;
       shown = c;
       $$('.clip.live', lanesEl).forEach(x => x.classList.remove('live'));
-      if (!c) { monitor.classList.remove('vid-on'); monImg.removeAttribute('src'); monBg.removeAttribute('src'); monTitle.textContent = 'Gap · no clip on the visible tracks'; monV.pause(); openBtn.hidden = true; return; }
+      if (!c) { monitor.classList.remove('vid-on'); monImg.removeAttribute('src'); monBg.removeAttribute('src'); monTitle.textContent = 'Gap · no clip on the visible tracks'; monV.pause(); return; }
       c.el.classList.add('live');
       monImg.src = monBg.src = c.poster;
       monTitle.textContent = `${c.title} · ${c.sub}`;
-      openBtn.hidden = !c.open;
       monitor.classList.remove('vid-on');
-      if (!reduced) { monV.src = c.src; monV.play().catch(() => {}); }
+      load(c);
+    };
+    // with sound on, play the clip's full video (it has the audio) from the moment the playhead is at
+    let sound = false;
+    const want = c => (sound && c.full ? c.full : c.src);
+    const offset = c => (sound && c.full ? c.base + Math.max(0, (mode === 'source' ? 0 : now - c.start)) : 0);
+    const load = c => {
+      if (reduced && !sound) return;
+      const src = want(c), at = offset(c);
+      monV.muted = !sound;
+      monV.preload = 'auto';
+      if (monV.getAttribute('src') !== src) { monV.src = src; monV.loop = !sound; monV.load(); }
+      const go = () => { if (at && Math.abs(monV.currentTime - at) > .4) monV.currentTime = at; if (playing || mode === 'source') monV.play().catch(() => {}); };
+      monV.readyState >= 1 ? go() : monV.addEventListener('loadedmetadata', go, { once: true });
     };
     monV.addEventListener('playing', () => monitor.classList.add('vid-on'));
+    const setSound = on => {
+      sound = on;
+      soundBtn.setAttribute('aria-pressed', on); soundBtn.setAttribute('aria-label', on ? 'Mute' : 'Turn sound on');
+      suite.classList.toggle('sound', on);
+      if (on) $$('video.full').forEach(v => v.pause());   // one sound at a time
+      if (shown) load(shown); else monV.muted = !on;
+    };
+    // a card starting to play mutes the monitor
+    document.addEventListener('cardplay', () => { if (sound) setSound(false); });
 
     // transport
     let now = 0, playing = !reduced, hover = null, dragging = false, userScrollAt = 0, last = performance.now();
@@ -407,18 +431,20 @@
     };
     const loop = ts => {
       const dt = Math.min(.1, (ts - last) / 1000); last = ts;
-      if (playing && !dragging && !idle()) { now = (now + dt) % T; draw(); }
+      const off = idle();
+      if (off !== loop.off) { loop.off = off; if (off) monV.pause(); else if (playing) monV.play().catch(() => {}); }
+      if (playing && !dragging && !off) { now = (now + dt) % T; draw(); }
       requestAnimationFrame(loop);
     };
     draw(); requestAnimationFrame(loop);
 
-    const seek = s => { now = Math.max(0, Math.min(T - .001, s)); hover = null; draw(); };
+    const seek = s => { now = Math.max(0, Math.min(T - .001, s)); hover = null; draw(); if (sound && shown) load(shown); };
     const timeAt = x => (x - inner.getBoundingClientRect().left) / inner.offsetWidth * T;
     const open = c => { if (c?.open) goTo(c.open); else if (c) document.getElementById('motion').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }); };
     const select = c => { $$('.clip.sel', lanesEl).forEach(x => x.classList.remove('sel')); c.el.classList.add('sel'); seek(c.start + .01); };
 
     playBtn.addEventListener('click', () => setPlaying(!playing));
-    openBtn.addEventListener('click', () => open(hover || shown));
+    soundBtn.addEventListener('click', () => { setSound(!sound); if (sound && !playing) setPlaying(true); });
     // scrub anywhere that is not a clip (ruler, gaps, audio); clips select instead
     let downX = 0, moved = false;
     scroll.addEventListener('pointerdown', e => {
