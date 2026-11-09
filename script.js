@@ -374,12 +374,13 @@
     const edits = () => [...new Set(Object.entries(tracks).filter(([k]) => !hidden.has(k)).flatMap(([, cs]) => cs.flatMap(c => [c.start, c.end])))].sort((x, y) => x - y);
     const topAt = s => { for (const k of ['v3', 'v2', 'v1']) { if (hidden.has(k)) continue; const c = tracks[k].find(c => s >= c.start && s < c.end); if (c) return c; } return null; };
 
-    // ---- monitor: plays only the clip you clicked, on a loop; the playhead shows how far through that video you are ----
+    // ---- monitor: plays the sequence clip by clip (muted: ~10 s each; with sound: the whole video), only a click jumps ----
     const monA = $('#mon-a');                    // the full video with sound, loaded only when sound is on
-    let cur = null, sound = false, playing = !reduced, dragging = false, userScrollAt = 0, tok = 0;
+    let cur = null, sound = false, playing = !reduced, dragging = false, userScrollAt = 0, tok = 0, clipT = 0;
+    const HOLD = 10;                             // seconds a clip stays on the monitor while muted
     const act = () => (sound && cur?.full && monA.dataset.ready === '1' ? monA : monV);
     const span = (v, c) => { const b = v === monA ? c.base : 0; return [b, Math.max(.1, (v.duration || 0) - b)]; };
-    const frac = () => { if (!cur) return 0; const v = act(); const [b, len] = span(v, cur); return Math.min(.999, Math.max(0, (v.currentTime - b) / len)); };
+    const frac = () => { if (!cur) return 0; const v = act(); if (v === monV) return Math.min(.999, clipT / HOLD); const [b, len] = span(v, cur); return Math.min(.999, Math.max(0, (v.currentTime - b) / len)); };
     const tcOf = s => { const f = Math.floor(s * 30); return `00:${pad(Math.floor(f / 1800) % 60)}:${pad(Math.floor(f / 30) % 60)}:${pad(f % 30)}`; };
     const whenMeta = (v, fn) => (v.readyState >= 1 ? fn() : v.addEventListener('loadedmetadata', fn, { once: true }));
 
@@ -387,14 +388,14 @@
       monV.muted = true; monV.loop = true; monV.preload = 'auto';
       if (monV.getAttribute('src') !== c.src) { monV.src = c.src; monV.load(); }
       const t = tok;
-      whenMeta(monV, () => { if (t !== tok) return; if (f) monV.currentTime = f * monV.duration; if (playing && !reduced && !(sound && monA.dataset.ready === '1')) monV.play().catch(() => {}); });
+      whenMeta(monV, () => { if (t !== tok) return; if (f) monV.currentTime = (f * HOLD) % monV.duration; if (playing && !reduced && !(sound && monA.dataset.ready === '1')) monV.play().catch(() => {}); });
     };
     // sound: keep the muted preview running while the full video buffers, then cross over to it
     const loadFull = (c, f) => {
       monA.pause(); monA.dataset.ready = '0'; monitor.classList.remove('full-on');
       if (!c.full) { monitor.classList.remove('loading'); return; }   // a graphic with no full video on the page stays silent
       monitor.classList.add('loading');
-      monA.loop = true; monA.muted = false; monA.preload = 'auto';
+      monA.loop = false; monA.muted = false; monA.preload = 'auto';
       if (monA.getAttribute('src') !== c.full) { monA.src = c.full; monA.load(); }
       const t = tok;
       whenMeta(monA, () => {
@@ -411,10 +412,11 @@
     });
     monA.addEventListener('waiting', () => { if (sound && monA.dataset.ready === '1') monitor.classList.add('loading'); });
     monA.addEventListener('canplay', () => monitor.classList.remove('loading'));
+    monA.addEventListener('ended', () => { if (sound) next(); });
 
     const select = (c, f = 0) => {
       if (!c) return;
-      tok++; cur = c;
+      tok++; cur = c; clipT = f * HOLD;
       $$('.clip.sel', lanesEl).forEach(x => x.classList.remove('sel'));
       c.el.classList.add('sel');
       monImg.src = monBg.src = c.poster;
@@ -427,7 +429,8 @@
     const seekFrac = f => {
       if (!cur) return;
       const v = act(), [b, len] = span(v, cur);
-      if (v.duration) v.currentTime = b + f * len;
+      if (v === monV) { clipT = f * HOLD; if (v.duration) v.currentTime = clipT % v.duration; }
+      else if (v.duration) v.currentTime = b + f * len;
       if (sound && v === monV && cur.full) loadFull(cur, f);   // still buffering: restart the sound from the new spot
       draw();
     };
@@ -442,7 +445,7 @@
       soundBtn.setAttribute('aria-pressed', on); soundBtn.setAttribute('aria-label', on ? 'Mute' : 'Turn sound on');
       suite.classList.add('tipped'); suite.classList.toggle('sound', on);
       if (on) { $$('video.full').forEach(v => v.pause()); if (!playing) setPlaying(true); if (cur) loadFull(cur, frac()); }
-      else { const f = frac(); monA.pause(); monA.dataset.ready = '0'; monitor.classList.remove('full-on', 'loading'); if (cur) { whenMeta(monV, () => { monV.currentTime = f * monV.duration; }); if (playing) monV.play().catch(() => {}); } }
+      else { const f = frac(); clipT = f * HOLD; monA.pause(); monA.dataset.ready = '0'; monitor.classList.remove('full-on', 'loading'); if (cur) { whenMeta(monV, () => { monV.currentTime = clipT % monV.duration; }); if (playing) monV.play().catch(() => {}); } }
     };
     // a card starting to play mutes the monitor
     document.addEventListener('cardplay', () => { if (sound) setSound(false); });
@@ -450,16 +453,20 @@
     const draw = () => {
       const f = frac(), x = cur ? cur.start + f * cur.dur : 0;
       head.style.transform = `translateX(${x / T * inner.offsetWidth}px)`;
-      if (cur) { const v = act(), [b] = span(v, cur); monTc.textContent = tcOf(Math.max(0, v.currentTime - b)); }
+      if (cur) { const v = act(), [b] = span(v, cur); monTc.textContent = tcOf(v === monV ? clipT : Math.max(0, v.currentTime - b)); }
       // keep the playhead in view when the timeline is wider than its box (phones), unless the user just scrolled it
       if (scroll.scrollWidth > scroll.clientWidth && performance.now() - userScrollAt > 2500 && !dragging) {
         const px = x / T * inner.offsetWidth, l = scroll.scrollLeft, w = scroll.clientWidth;
         if (px < l + w * .1 || px > l + w * .8) scroll.scrollLeft = px - w * .3;
       }
     };
-    const loop = () => {
+    let lastTs = performance.now();
+    const loop = ts => {
+      const dt = Math.min(.1, (ts - lastTs) / 1000); lastTs = ts;
       const off = idle();
       if (off !== loop.off) { loop.off = off; if (off) { monV.pause(); monA.pause(); } else if (playing) act().play().catch(() => {}); }
+      // muted: each clip holds ~10 s, then the next one plays (with sound, the video's own end moves on)
+      if (!off && playing && !dragging && cur && !sound) { clipT += dt; if (clipT >= HOLD) next(); }
       if (!off) draw();
       requestAnimationFrame(loop);
     };
@@ -468,6 +475,7 @@
     const timeAt = x => Math.max(0, Math.min(T - .001, (x - inner.getBoundingClientRect().left) / inner.offsetWidth * T));
     const scrubTo = t => { const c = topAt(t); if (!c) return; const f = (t - c.start) / c.dur; if (c !== cur) select(c, f); else seekFrac(f); };
     const open = c => { if (c?.open) goTo(c.open); else if (c) document.getElementById('motion').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }); };
+    const next = () => { const vs = visible(), i = vs.indexOf(cur); select(vs[(i + 1) % vs.length]); };
     const visible = () => Object.entries(tracks).filter(([k]) => !hidden.has(k)).flatMap(([, cs]) => cs).sort((x, y) => x.start - y.start || (x.track < y.track ? 1 : -1));
 
     playBtn.addEventListener('click', () => setPlaying(!playing));
