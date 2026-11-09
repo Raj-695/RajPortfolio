@@ -308,9 +308,8 @@
   }
 
   /* ---------- hero edit suite ----------
-     A program monitor over a timeline of the real projects. The playhead plays through the sequence and the
-     monitor shows the clip on the highest visible track under it (like a real NLE). Drag to scrub, hover a clip
-     to preview it as a source, click to jump, double-click (or "Watch with sound") to play it in its card. */
+     A program monitor over a timeline of the real projects. Nothing changes on hover: click a clip to play it
+     (it loops), drag the ruler to scrub, the speaker adds sound, double-click opens the full video in its card. */
   {
     const suite = $('#suite'), scroll = $('#tl-scroll'), inner = $('#tl-inner'), lanesEl = $('#tl-lanes'), head = $('#tl-playhead');
     const monitor = $('#monitor'), monV = $('#mon-v'), monImg = $('#mon-img'), monBg = $('#mon-bg'), monMode = $('#mon-mode'), monTitle = $('#mon-title'), monTc = $('#mon-tc');
@@ -354,7 +353,7 @@
         b.className = `clip ${c.kind === 'gfx' ? 'g' : 'v'}${k === 'v1' ? ' v1' : ''}`;
         b.style.cssText = `left:${pct(c.start)};width:calc(${pct(c.dur)} - 2px);--img:url(${c.poster})`;
         b.innerHTML = `<b>${c.title}</b>`;
-        b.setAttribute('aria-label', `${c.title}, ${c.sub}. Preview on the monitor; double-click to watch with sound`);
+        b.setAttribute('aria-label', `${c.title}, ${c.sub}. Play on the monitor; double-click to open the full video`);
         b._clip = c; c.el = b;
         lane.append(b);
       });
@@ -375,121 +374,144 @@
     const edits = () => [...new Set(Object.entries(tracks).filter(([k]) => !hidden.has(k)).flatMap(([, cs]) => cs.flatMap(c => [c.start, c.end])))].sort((x, y) => x - y);
     const topAt = s => { for (const k of ['v3', 'v2', 'v1']) { if (hidden.has(k)) continue; const c = tracks[k].find(c => s >= c.start && s < c.end); if (c) return c; } return null; };
 
-    // monitor
-    let shown = null, mode = 'program';
-    const show = (c, m) => {
-      mode = m; monitor.classList.toggle('source', m === 'source');
-      monMode.lastChild.textContent = m === 'source' ? 'Source' : 'Program';
-      if (c === shown) return;
-      shown = c;
-      $$('.clip.live', lanesEl).forEach(x => x.classList.remove('live'));
-      if (!c) { monitor.classList.remove('vid-on'); monImg.removeAttribute('src'); monBg.removeAttribute('src'); monTitle.textContent = 'Gap · no clip on the visible tracks'; monV.pause(); return; }
-      c.el.classList.add('live');
-      monImg.src = monBg.src = c.poster;
-      monTitle.textContent = `${c.title} · ${c.sub}`;
-      monitor.classList.remove('vid-on');
-      load(c);
+    // ---- monitor: plays only the clip you clicked, on a loop; the playhead shows how far through that video you are ----
+    const monA = $('#mon-a');                    // the full video with sound, loaded only when sound is on
+    let cur = null, sound = false, playing = !reduced, dragging = false, userScrollAt = 0, tok = 0;
+    const act = () => (sound && cur?.full && monA.dataset.ready === '1' ? monA : monV);
+    const span = (v, c) => { const b = v === monA ? c.base : 0; return [b, Math.max(.1, (v.duration || 0) - b)]; };
+    const frac = () => { if (!cur) return 0; const v = act(); const [b, len] = span(v, cur); return Math.min(.999, Math.max(0, (v.currentTime - b) / len)); };
+    const tcOf = s => { const f = Math.floor(s * 30); return `00:${pad(Math.floor(f / 1800) % 60)}:${pad(Math.floor(f / 30) % 60)}:${pad(f % 30)}`; };
+    const whenMeta = (v, fn) => (v.readyState >= 1 ? fn() : v.addEventListener('loadedmetadata', fn, { once: true }));
+
+    const loadPreview = (c, f) => {
+      monV.muted = true; monV.loop = true; monV.preload = 'auto';
+      if (monV.getAttribute('src') !== c.src) { monV.src = c.src; monV.load(); }
+      const t = tok;
+      whenMeta(monV, () => { if (t !== tok) return; if (f) monV.currentTime = f * monV.duration; if (playing && !reduced && !(sound && monA.dataset.ready === '1')) monV.play().catch(() => {}); });
     };
-    // with sound on, play the clip's full video (it has the audio) from the moment the playhead is at
-    let sound = false;
-    const want = c => (sound && c.full ? c.full : c.src);
-    const offset = c => (sound && c.full ? c.base + Math.max(0, (mode === 'source' ? 0 : now - c.start)) : 0);
-    const load = c => {
-      if (reduced && !sound) return;
-      const src = want(c), at = offset(c);
-      monV.muted = !sound;
-      monV.preload = 'auto';
-      if (monV.getAttribute('src') !== src) { monV.src = src; monV.loop = !sound; monV.load(); }
-      const go = () => { if (at && Math.abs(monV.currentTime - at) > .4) monV.currentTime = at; if (playing || mode === 'source') monV.play().catch(() => {}); };
-      monV.readyState >= 1 ? go() : monV.addEventListener('loadedmetadata', go, { once: true });
+    // sound: keep the muted preview running while the full video buffers, then cross over to it
+    const loadFull = (c, f) => {
+      monA.pause(); monA.dataset.ready = '0'; monitor.classList.remove('full-on');
+      if (!c.full) { monitor.classList.remove('loading'); return; }   // a graphic with no full video on the page stays silent
+      monitor.classList.add('loading');
+      monA.loop = true; monA.muted = false; monA.preload = 'auto';
+      if (monA.getAttribute('src') !== c.full) { monA.src = c.full; monA.load(); }
+      const t = tok;
+      whenMeta(monA, () => {
+        if (t !== tok || !sound) return;
+        const [b, len] = span(monA, c);
+        monA.currentTime = b + f * len;
+        if (playing) monA.play().catch(() => monitor.classList.remove('loading'));
+      });
     };
     monV.addEventListener('playing', () => monitor.classList.add('vid-on'));
+    monA.addEventListener('playing', () => {
+      if (!sound) { monA.pause(); return; }
+      monA.dataset.ready = '1'; monitor.classList.add('full-on'); monitor.classList.remove('loading'); monV.pause();
+    });
+    monA.addEventListener('waiting', () => { if (sound && monA.dataset.ready === '1') monitor.classList.add('loading'); });
+    monA.addEventListener('canplay', () => monitor.classList.remove('loading'));
+
+    const select = (c, f = 0) => {
+      if (!c) return;
+      tok++; cur = c;
+      $$('.clip.sel', lanesEl).forEach(x => x.classList.remove('sel'));
+      c.el.classList.add('sel');
+      monImg.src = monBg.src = c.poster;
+      monTitle.textContent = `${c.title} · ${c.sub}`;
+      monitor.classList.remove('vid-on', 'full-on');
+      loadPreview(c, f);
+      if (sound) loadFull(c, f); else { monA.pause(); monA.dataset.ready = '0'; }
+      draw();
+    };
+    const seekFrac = f => {
+      if (!cur) return;
+      const v = act(), [b, len] = span(v, cur);
+      if (v.duration) v.currentTime = b + f * len;
+      if (sound && v === monV && cur.full) loadFull(cur, f);   // still buffering: restart the sound from the new spot
+      draw();
+    };
+
+    const setPlaying = v => {
+      playing = v; suite.classList.toggle('paused', !v); playBtn.setAttribute('aria-label', v ? 'Pause' : 'Play');
+      if (v) act().play().catch(() => {}); else { monV.pause(); monA.pause(); }
+    };
+    setPlaying(playing);
     const setSound = on => {
-      sound = on;
+      sound = on; tok++;
       soundBtn.setAttribute('aria-pressed', on); soundBtn.setAttribute('aria-label', on ? 'Mute' : 'Turn sound on');
-      suite.classList.toggle('sound', on);
-      if (on) $$('video.full').forEach(v => v.pause());   // one sound at a time
-      if (shown) load(shown); else monV.muted = !on;
+      suite.classList.add('tipped'); suite.classList.toggle('sound', on);
+      if (on) { $$('video.full').forEach(v => v.pause()); if (!playing) setPlaying(true); if (cur) loadFull(cur, frac()); }
+      else { const f = frac(); monA.pause(); monA.dataset.ready = '0'; monitor.classList.remove('full-on', 'loading'); if (cur) { whenMeta(monV, () => { monV.currentTime = f * monV.duration; }); if (playing) monV.play().catch(() => {}); } }
     };
     // a card starting to play mutes the monitor
     document.addEventListener('cardplay', () => { if (sound) setSound(false); });
 
-    // transport
-    let now = 0, playing = !reduced, hover = null, dragging = false, userScrollAt = 0, last = performance.now();
-    const setPlaying = v => { playing = v; suite.classList.toggle('paused', !v); playBtn.setAttribute('aria-label', v ? 'Pause the timeline' : 'Play the timeline'); if (!v) monV.pause(); else if (shown) monV.play().catch(() => {}); };
-    setPlaying(playing);
-    const tcOf = s => { const f = Math.floor(s * 30); return `00:${pad(Math.floor(f / 1800) % 60)}:${pad(Math.floor(f / 30) % 60)}:${pad(f % 30)}`; };
     const draw = () => {
-      head.style.transform = `translateX(${now / T * inner.offsetWidth}px)`;
-      monTc.textContent = tcOf(now);
-      if (!hover) show(topAt(now), 'program');
+      const f = frac(), x = cur ? cur.start + f * cur.dur : 0;
+      head.style.transform = `translateX(${x / T * inner.offsetWidth}px)`;
+      if (cur) { const v = act(), [b] = span(v, cur); monTc.textContent = tcOf(Math.max(0, v.currentTime - b)); }
       // keep the playhead in view when the timeline is wider than its box (phones), unless the user just scrolled it
       if (scroll.scrollWidth > scroll.clientWidth && performance.now() - userScrollAt > 2500 && !dragging) {
-        const x = now / T * inner.offsetWidth, l = scroll.scrollLeft, w = scroll.clientWidth;
-        if (x < l + w * .15 || x > l + w * .7) scroll.scrollLeft = x - w * .3;
+        const px = x / T * inner.offsetWidth, l = scroll.scrollLeft, w = scroll.clientWidth;
+        if (px < l + w * .1 || px > l + w * .8) scroll.scrollLeft = px - w * .3;
       }
     };
-    const loop = ts => {
-      const dt = Math.min(.1, (ts - last) / 1000); last = ts;
+    const loop = () => {
       const off = idle();
-      if (off !== loop.off) { loop.off = off; if (off) monV.pause(); else if (playing) monV.play().catch(() => {}); }
-      if (playing && !dragging && !off) { now = (now + dt) % T; draw(); }
+      if (off !== loop.off) { loop.off = off; if (off) { monV.pause(); monA.pause(); } else if (playing) act().play().catch(() => {}); }
+      if (!off) draw();
       requestAnimationFrame(loop);
     };
-    draw(); requestAnimationFrame(loop);
+    requestAnimationFrame(loop);
 
-    const seek = s => { now = Math.max(0, Math.min(T - .001, s)); hover = null; draw(); if (sound && shown) load(shown); };
-    const timeAt = x => (x - inner.getBoundingClientRect().left) / inner.offsetWidth * T;
+    const timeAt = x => Math.max(0, Math.min(T - .001, (x - inner.getBoundingClientRect().left) / inner.offsetWidth * T));
+    const scrubTo = t => { const c = topAt(t); if (!c) return; const f = (t - c.start) / c.dur; if (c !== cur) select(c, f); else seekFrac(f); };
     const open = c => { if (c?.open) goTo(c.open); else if (c) document.getElementById('motion').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }); };
-    const select = c => { $$('.clip.sel', lanesEl).forEach(x => x.classList.remove('sel')); c.el.classList.add('sel'); seek(c.start + .01); };
+    const visible = () => Object.entries(tracks).filter(([k]) => !hidden.has(k)).flatMap(([, cs]) => cs).sort((x, y) => x.start - y.start || (x.track < y.track ? 1 : -1));
 
     playBtn.addEventListener('click', () => setPlaying(!playing));
-    soundBtn.addEventListener('click', () => { setSound(!sound); if (sound && !playing) setPlaying(true); });
-    // scrub anywhere that is not a clip (ruler, gaps, audio); clips select instead
-    let downX = 0, moved = false;
+    soundBtn.addEventListener('click', () => setSound(!sound));
+    // drag on the ruler / gaps / audio to scrub; clicking a clip plays that clip
+    let downX = 0, moved = false, lastScrub = 0;
     scroll.addEventListener('pointerdown', e => {
       downX = e.clientX; moved = false;
-      if (e.target.closest('.clip') && e.pointerType !== 'mouse') return; // touch: let the timeline scroll, tap selects
       if (e.target.closest('.clip')) return;
-      dragging = true; scroll.setPointerCapture(e.pointerId); seek(timeAt(e.clientX));
+      dragging = true; scroll.setPointerCapture(e.pointerId); scrubTo(timeAt(e.clientX));
     });
     scroll.addEventListener('pointermove', e => {
       if (Math.abs(e.clientX - downX) > 4) moved = true;
-      if (dragging) seek(timeAt(e.clientX));
+      if (dragging && performance.now() - lastScrub > 60) { lastScrub = performance.now(); scrubTo(timeAt(e.clientX)); }
     });
-    const endDrag = () => { dragging = false; };
-    scroll.addEventListener('pointerup', endDrag); scroll.addEventListener('pointercancel', endDrag);
+    const endDrag = e => { if (dragging && e) scrubTo(timeAt(e.clientX)); dragging = false; };
+    scroll.addEventListener('pointerup', endDrag); scroll.addEventListener('pointercancel', () => { dragging = false; });
     scroll.addEventListener('scroll', () => { if (!dragging) userScrollAt = performance.now(); }, { passive: true });
     lanesEl.addEventListener('click', e => {
       const b = e.target.closest('.clip'); if (!b || moved) return;
       const c = b._clip;
-      // a second tap on the selected clip opens it (touch has no double-click)
-      if (b.classList.contains('sel') && !finePointer) return open(c);
-      select(c);
+      if (c === cur && !finePointer) return open(c);   // touch: a second tap opens the full video in its card
+      if (c !== cur) select(c);
     });
     lanesEl.addEventListener('dblclick', e => { const b = e.target.closest('.clip'); if (b) open(b._clip); });
-    if (finePointer) {
-      lanesEl.addEventListener('pointerover', e => { const b = e.target.closest('.clip'); if (b && !dragging) { hover = b._clip; show(hover, 'source'); } });
-      lanesEl.addEventListener('pointerleave', () => { hover = null; show(topAt(now), 'program'); });
-    }
     // track visibility (eye buttons)
     $$('#tl-hdrs button.th').forEach(btn => btn.addEventListener('click', () => {
       const k = btn.dataset.k, on = hidden.has(k);
       if (on) hidden.delete(k); else hidden.add(k);
       btn.setAttribute('aria-pressed', on);
       laneEl[k].classList.toggle('off', !on);
-      shown = undefined; draw();
+      if (cur && hidden.has(cur.track)) select(topAt(cur.start + frac() * cur.dur) || visible()[0]);
     }));
-    // keyboard inside the suite: Space play/pause, arrows jump between edit points, Enter opens
+    // keyboard inside the suite: Space play/pause, arrows = previous / next clip, Enter opens it
     suite.addEventListener('keydown', e => {
       if (e.key === ' ' && !e.target.closest('button')) { e.preventDefault(); setPlaying(!playing); }
       else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         e.preventDefault();
-        const ed = edits(), nxt = e.key === 'ArrowRight' ? ed.find(x => x > now + .05) : [...ed].reverse().find(x => x < now - .05);
-        seek(nxt ?? (e.key === 'ArrowRight' ? 0 : ed[ed.length - 2] ?? 0));
-      }
+        const vs = visible(), i = vs.indexOf(cur);
+        select(vs[(i + (e.key === 'ArrowRight' ? 1 : -1) + vs.length) % vs.length]);
+      } else if (e.key === 'Enter' && e.target.closest('.clip')) { e.preventDefault(); open(e.target.closest('.clip')._clip); }
     });
     addEventListener('resize', draw);
+    select(tracks.v2[0]);
   }
 
   /* ---------- animation loops ---------- */

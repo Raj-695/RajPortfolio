@@ -794,3 +794,12 @@ h1, h2, .feat-info h3, .cat-head h3, .exp-what h3, .sub-head h3, .about-card h2,
 .stats b, .stats b.suf { letter-spacing: -.01em; }
 .hero::before { filter: none; }
 .svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+
+/* monitor: full video with sound fades in over the preview once it is actually playing */
+.mon-a { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .35s; }
+.monitor.full-on .mon-a { opacity: 1; }
+.mon-load { position: absolute; left: 50%; top: 50%; width: 38px; height: 38px; margin: -19px 0 0 -19px; z-index: 2; border-radius: 50%;
+  border: 2.5px solid rgba(255, 255, 255, .25); border-top-color: #fff; opacity: 0; transition: opacity .2s; animation: spin .8s linear infinite; pointer-events: none; }
+.monitor.loading .mon-load { opacity: 1; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.clip.sel { filter: none; box-shadow: inset 0 0 0 2px #E0703F, 0 0 14px rgba(224, 112, 63, .5); }
