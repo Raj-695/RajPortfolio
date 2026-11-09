@@ -39,30 +39,22 @@ window.PORTFOLIO = {
     { title: 'Festival greetings', note: 'Tihar and Dashain greetings that feel warm, not like a template.', ids: ['president-tihar', 'rodhi-tika', 'seenmatic-dashain'] },
     { title: 'Film, sound & motion', note: 'Personal pieces where I push rhythm, sound design and animation.', ids: ['supra', 'drift-sfx', 'motion-explainer'], wide: true }
   ],
-  // motion-graphics moments cut from delivered videos (assets/mg/<id>.mp4 + .jpg, silent loops)
+  // motion-graphics moments cut from delivered videos (assets/mg/<id>.mp4 + .jpg, silent loops); src = the full video on the page
   motion: [
-    { id: 'tiktok-profile', title: 'TikTok profile screen', from: 'All Star Jewellery' },
-    { id: 'comments', title: 'Viewer comment pop-ups', from: 'All Star Jewellery' },
-    { id: 'price-breakdown', title: 'Price breakdown to 198%', from: 'All Star Jewellery' },
-    { id: 'profit-bars', title: 'Profit comparison bars', from: 'All Star Jewellery' },
-    { id: 'checklist', title: 'Animated checklist', from: 'All Star Jewellery' },
+    { id: 'tiktok-profile', src: 'asj-part1', title: 'TikTok profile screen', from: 'All Star Jewellery' },
+    { id: 'comments', src: 'asj-part1', title: 'Viewer comment pop-ups', from: 'All Star Jewellery' },
+    { id: 'profit-bars', src: 'asj-part3', title: 'Profit comparison bars', from: 'All Star Jewellery' },
     { id: 'elec-social', title: 'Social platforms build', from: 'XSIS Media election ad' },
     { id: 'elec-wall', title: 'Social post wall', from: 'XSIS Media election ad' },
     { id: 'elec-work', title: '“Your work” photo cards', from: 'XSIS Media election ad' },
-    { id: 'elec-platforms', title: 'Platform list', from: 'XSIS Media election ad' },
-    { id: 'supply-chain', title: 'Supply-chain cards', from: 'Yuwaz' },
-    { id: 'seat-counter', title: 'Limited-seats counter', from: 'Vibes Advisory' },
-    { id: 'running-total', title: 'Running total card', from: 'All Star Jewellery' },
-    { id: 'budget-tags', title: 'Budget price tags', from: 'All Star Jewellery' },
-    { id: 'service-list', title: 'Stacked service list', from: 'Expert Service Hub' },
-    { id: 'winter-cards', title: 'Glass category cards', from: 'Rodhi Sources' }
+    { id: 'supply-chain', src: 'yuwaz', title: 'Supply-chain cards', from: 'Yuwaz' },
+    { id: 'running-total', src: 'seenmatic-wedding', title: 'Running total card', from: 'All Star Jewellery' }
   ],
   // illustrated scenes animated for the All Star Jewellery series (assets/anim/<id>.mp4 + .jpg, silent loops)
   animations: [
     { id: 'honest-shop', title: 'The honest shop', explains: 'A clear bill: gold, making charge and tax each on their own line. The customer reads it, smiles, and the hearts follow.' },
     { id: 'scam-shop', title: 'The scam shop', explains: 'The other side: hidden charges. The owner counts the cash while the customers are left with question marks.' },
-    { id: 'sarkar', title: 'Who gets the blame', explains: 'The system, not the shop: an official enjoys his grapes while the complaints pile up beside him.' },
-    { id: 'tiktok-pov', title: 'The viewer’s side', explains: 'The owner’s clip played back inside a phone feed with the likes coming in, to show how viewers saw the first video.' }
+    { id: 'sarkar', title: 'Who gets the blame', explains: 'The system, not the shop: an official enjoys his grapes while the complaints pile up beside him.' }
   ],
   projects: [
     {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#0B0B0C">
+  <meta name="theme-color" content="#F6F4EF">
   <title>Raj Kahar · Video Editor Portfolio (Nepal)</title>
   <meta name="description" content="Raj Kahar is a video editor in Nepal with 1+ year of full-time work and 25+ videos delivered for brands in Nepal and the USA. Editor at the Seenmatic agency. Reels, ads, interviews, animation, colour and sound.">
   <meta name="author" content="Raj Kahar">
@@ -18,9 +18,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="styles.css?v=44">
-  <script defer src="data/projects.js?v=32"></script>
-  <script defer src="script.js?v=44"></script>
+  <link rel="stylesheet" href="styles.css?v=46">
+  <script defer src="data/projects.js?v=34"></script>
+  <script defer src="script.js?v=46"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Raj Kahar","jobTitle":"Video Editor","worksFor":{"@type":"Organization","name":"Seenmatic"},"address":{"@type":"PostalAddress","addressLocality":"Nepalgunj","addressCountry":"NP"},"email":"mailto:rraj68711@gmail.com","url":"https://raj-695.github.io/RajPortfolio/","sameAs":["https://www.instagram.com/exwhyzed77/","https://www.tiktok.com/@lowkeeyyy_69"]}</script>
 </head>
 <body>
@@ -48,26 +48,50 @@
   <main id="main">
     <!-- HERO -->
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="wrap hero-copy">
-        <div class="title-wrap">
-          <!-- a live edit timeline moving behind the title, built by script.js from the real projects -->
-          <div class="tlx rise" style="--d:0" aria-hidden="true">
-            <div class="tlx-heads"><span class="r">TC</span><span class="t">V3</span><span class="v">V2</span><span class="v">V1</span><span class="a">A1</span><span class="a2">A2</span></div>
-            <div class="tlx-view">
-              <div class="tlx-ruler" id="tlx-ruler"></div>
-              <div class="tlx-reel" id="tlx-reel"></div>
-            </div>
-            <div class="tlx-head"><span id="tlx-tc">01:00:00:00</span></div>
-          </div>
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
           <p class="eyebrow lg rise" style="--d:0"><i class="dot" aria-hidden="true"></i>Video editor at Seenmatic · Open for freelance</p>
           <h1 id="hero-title" class="rise" style="--d:1">I edit videos people <em>actually finish.</em></h1>
-        </div>
-        <div class="hero-sub rise" style="--d:2">
-          <p>Reels, ads and interviews for brands in Nepal and the USA. Story, captions, motion graphics, animation, colour and sound, all in one edit.</p>
-          <div class="hero-actions">
+          <p class="hero-lead rise" style="--d:2">Reels, ads and interviews for brands in Nepal and the USA. Story, captions, motion graphics, animation, colour and sound, all in one edit.</p>
+          <div class="hero-actions rise" style="--d:3">
             <a class="btn btn-light" href="#work">See the work</a>
             <a class="btn btn-ghost lg" href="#contact">Get in touch</a>
           </div>
+        </div>
+
+        <!-- EDIT SUITE: a program monitor + a timeline of the real projects you can play with (built by script.js) -->
+        <div class="suite rise" style="--d:2" id="suite" role="group" aria-label="Edit suite: a timeline of my work. Click a clip to preview it, double-click to watch it with sound.">
+          <figure class="monitor" id="monitor">
+            <img class="mon-bg" id="mon-bg" alt="" aria-hidden="true">
+            <img class="mon-img" id="mon-img" alt="" aria-hidden="true">
+            <video class="mon-v" id="mon-v" muted loop playsinline preload="none" aria-hidden="true"></video>
+            <div class="mon-top">
+              <span class="mon-chip" id="mon-mode"><i class="rec" aria-hidden="true"></i>Program</span>
+              <span class="mon-title" id="mon-title"></span>
+            </div>
+            <div class="mon-bar">
+              <button type="button" class="mon-btn lg" id="tl-play" aria-label="Pause the timeline"><svg viewBox="0 0 20 20" aria-hidden="true"><path class="i-play" d="M5 3l12 7-12 7z"/><path class="i-pause" d="M5 3h3.5v14H5zM11.5 3H15v14h-3.5z"/></svg></button>
+              <span class="mon-tc" id="mon-tc">00:00:00:00</span>
+              <button type="button" class="btn btn-sm lg lg-accent mon-open" id="mon-open">Watch with sound <span aria-hidden="true">↗</span></button>
+            </div>
+          </figure>
+          <div class="tl">
+            <div class="tl-hdrs" id="tl-hdrs">
+              <span class="th-ruler" aria-hidden="true">TC</span>
+              <button type="button" class="th" data-k="v3" aria-pressed="true" title="Show or hide this track"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye" d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle class="eye" cx="12" cy="12" r="2.8"/><path class="slash" d="M4 4l16 16"/></svg><b>V3</b><span>Graphics</span></button>
+              <button type="button" class="th" data-k="v2" aria-pressed="true" title="Show or hide this track"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye" d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle class="eye" cx="12" cy="12" r="2.8"/><path class="slash" d="M4 4l16 16"/></svg><b>V2</b><span>Reels</span></button>
+              <button type="button" class="th" data-k="v1" aria-pressed="true" title="Show or hide this track"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye" d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle class="eye" cx="12" cy="12" r="2.8"/><path class="slash" d="M4 4l16 16"/></svg><b>V1</b><span>Long-form</span></button>
+              <span class="th th-a" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9.5h4l5-4v13l-5-4H4z"/></svg><b>A1</b><span>Audio</span></span>
+            </div>
+            <div class="tl-scroll" id="tl-scroll">
+              <div class="tl-inner" id="tl-inner">
+                <div class="tl-ruler" id="tl-ruler" aria-hidden="true"></div>
+                <div class="tl-lanes" id="tl-lanes"></div>
+                <div class="tl-playhead" id="tl-playhead" aria-hidden="true"><i></i></div>
+              </div>
+            </div>
+          </div>
+          <p class="tl-hint">Drag to scrub · hover a clip to preview · double-click to watch with sound<span class="kb"> · <kbd>Space</kbd> play · <kbd>←</kbd><kbd>→</kbd> jump between edits</span></p>
         </div>
       </div>
       <!-- a slow wall of the real reels; click one to play it in the work section -->
@@ -105,7 +129,7 @@
       <div class="sec-head reveal">
         <p class="kicker"><span>02</span>Motion graphics</p>
         <h2 id="motion-title">Graphics that <em>explain the idea.</em></h2>
-        <p class="sec-note">Moments taken straight from delivered videos: phone and app screens, price breakdowns, counters, lists and cards, each built to make a point land in a second or two.</p>
+        <p class="sec-note">The strongest moments from delivered videos: app screens, comment pop-ups, comparison bars, social walls and explainer cards, each built to make a point land in a second or two.</p>
       </div>
       <div class="mg-grid" id="mg"></div>
 
